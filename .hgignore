@@ -1,0 +1,4 @@
+berge/data
+
+syntax: glob
+*.pyc
