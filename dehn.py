@@ -122,19 +122,6 @@ def initial_list_of_closed():
         writer.writerow([M.name(), repr(slopes)])
         file.flush()
 
-def initial_list_of_closed_high():
-    import csv
-    file = open('/pkgs/tmp/closed_high.csv', 'w')
-    writer = csv.writer(file)
-    writer.writerow(['name','slopes'])
-    for M in snappy.OrientableCuspedCensus(cusps=1):
-        M = M.high_precision()
-        slopes = hyperbolic_dehn_fillings(M)
-        writer.writerow([M.name(), repr(slopes)])
-        file.flush()
-    
-    
-
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
