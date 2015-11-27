@@ -1,4 +1,5 @@
 berge/data
+.DS_Store
 
 syntax: glob
 *.pyc
