@@ -1,6 +1,7 @@
 import snappy
-import pandas as pd
 import taskdb2
+import pandas as pd
+import networkx as nx
 
 fill_col = 'inj_02'
 
@@ -58,6 +59,29 @@ def weed(task):
     task['done'] = True
 
 
+def sort_into_classes(df):
+    """
+    Check the precursors field for missing fillings, then pick the
+    minimal element in each equivalence class.
+    """
+    closed, images = set(), set()
+    for i, row in df.iterrows():
+        closed.update(row['name'] + repr(slope) for slope in row[fill_col])
+        images.update(x[1] for x in row['precursors'])
+
+
+    G = nx.Graph()
+    G.add_nodes_from(closed)
+    for i, row in df.iterrows():
+        G.add_edges_from(row['precursors'])
+
+    classes = [sorted(H, key=sort_key) for H in nx.connected_components(G)]
+    classes.sort(key=lambda x:sort_key(x[0]))
+
+    ans = pd.DataFrame({'name':[c[0] for c in classes], 'descriptions':classes})
+    ans = ans[['name', 'descriptions']]
+    ans.to_csv('closed.csv', index=False)
+    return ans
 
 task = {'name': 'o9_35571', fill_col:'[(-5, 1), (-4, 1), (-3, 1), (-3, 2), (-2, 1), (-2, 3), (-1, 1), (-1, 2), (-1, 3), (-1, 4), (1, 2), (1, 3), (1, 4), (1, 5), (2, 1), (2, 3), (2, 5), (3, 1), (3, 2), (3, 4), (3, 5), (4, 1), (4, 3), (4, 5), (5, 1), (5, 2), (5, 3), (5, 4), (6, 1)]'}
                 
