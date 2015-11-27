@@ -41,3 +41,17 @@ def check_with_magma():
     df.to_csv('berge_finite_checked.csv', index=False)
     return df
 
+def collate_by_manifold():
+    df = pd.read_csv('berge_finite_checked.csv.bz2')
+    df['base_name'] = df.name.apply(lambda x:x.split('(')[0])
+    df['slope'] = df.name.apply(lambda x:eval('(' + x.split('(')[1]))
+    gb = df.groupby(['base_name'])
+    collated = pd.DataFrame(gb.slope.agg(sorted), columns = ['finite'])
+    collated['name'] = collated.index
+    collated.to_csv('/tmp/test.csv', index=False, columns=['name', 'finite'])
+
+def check_collated():
+    da = pd.read_csv('berge_finite_checked.csv.bz2')
+    db = pd.read_csv('berge_finite_checked_collated.csv.bz2')
+    db['finite'] = db.finite.apply(eval)
+    assert sum(db.finite.apply(len)) == len(da)
