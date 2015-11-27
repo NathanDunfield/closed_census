@@ -32,21 +32,14 @@ def order_via_magma(group):
     if group.num_generators() == 0:
         return 1
     G = sage.all.magma(group)
-    return G.Order().sage()
-
-def appears_hyperbolic(M):
-    acceptable = ['all tetrahedra positively oriented',
-                  'contains negatively oriented tetrahedra']
-    return M.solution_type() in acceptable and M.volume() > 0.5
+    return G.Order(CosetLimit=250000).sage()
 
 def has_finite_fundamental_group(manifold):
     M = manifold.high_precision()
-    if appears_hyperbolic(M):
-        return False
     G = good_presentation(manifold)
     if G.num_generators() <= 1:
         return True
-    return order_via_magma(G) != 0
+    return order_via_magma(G) not in [0, sage.all.infinity]
 
 def finite_fillings(manifold):
     """

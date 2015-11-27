@@ -39,7 +39,10 @@ def weed(task):
                     X.randomize()
                     X = X.high_precision()
                     Y = Y.high_precision()
-                    isos = X.is_isometric_to(Y, True)
+                    try:
+                        isos = X.is_isometric_to(Y, True)
+                    except RuntimeError:
+                        isos = []
                 for iso in isos:
                     C = iso.cusp_maps()[0]
                     t = (C[0,0], C[1,0])

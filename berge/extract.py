@@ -2,6 +2,7 @@ import os, sys, re, glob, csv
 import pandas as pd
 import sage.all
 import snappy
+import taskdb2
 
 num_tet = {'m':5, 's':6, 'v':7, 't':8, 'o':9}
 def sort_key(datum):
@@ -55,3 +56,16 @@ def check_collated():
     db = pd.read_csv('berge_finite_checked_collated.csv.bz2')
     db['finite'] = db.finite.apply(eval)
     assert sum(db.finite.apply(len)) == len(da)
+
+def compare_with_new(df):
+    #exdb = taskdb2.ExampleDatabase('cusped_fillings')
+    #df = exdb.dataframe()
+    df = df[df.finite.notnull()]
+    df = df[['name', 'finite']]
+
+    db = pd.read_csv('berge_finite_checked_collated.csv.bz2')
+    db['finite2'] = db['finite']
+    del db['finite']
+
+    da = pd.merge(df, db, on='name')
+    return da
