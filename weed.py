@@ -20,6 +20,13 @@ def sort_key(name):
     num_tet = {'m':5, 's':6, 'v':7, 't':8, 'o':9}
     return (num_tet[name[0]], name)
 
+def normalize_slope((a,b)):
+    if a*b == 0:
+        a, b = abs(a), abs(b)
+    elif b < 0:
+        a, b = -a, -b
+    return (a,b)
+
 def weed(task):
     name = task['name']
     manifold = snappy.Manifold(name)
@@ -45,10 +52,12 @@ def weed(task):
                         isos = []
                 for iso in isos:
                     C = iso.cusp_maps()[0]
-                    t = (C[0,0], C[1,0])
+                    t = normalize_slope((C[0,0], C[1,0]))
                     weeded.append((M.name() + repr(s), Y.name() + repr(t)))
     task['precursors'] = repr(sorted(set(weeded)))
     task['done'] = True
+
+
 
 task = {'name': 'o9_35571', fill_col:'[(-5, 1), (-4, 1), (-3, 1), (-3, 2), (-2, 1), (-2, 3), (-1, 1), (-1, 2), (-1, 3), (-1, 4), (1, 2), (1, 3), (1, 4), (1, 5), (2, 1), (2, 3), (2, 5), (3, 1), (3, 2), (3, 4), (3, 5), (4, 1), (4, 3), (4, 5), (5, 1), (5, 2), (5, 3), (5, 4), (6, 1)]'}
                 
