@@ -7,6 +7,7 @@
 #SBATCH --time=7-00:00
 #SBATCH --output=slurm_out/%j
 #SBATCH --error=slurm_error/%j
+#SBATCH --nodelist=keeling-e01
 
 import taskdb2, snappy, finite
 
@@ -17,4 +18,4 @@ def find_finite_fillings(task):
     task['done'] = True
 
 exdb = taskdb2.ExampleDatabase('cusped_fillings')
-exdb.run_function('task_inj02', find_finite_fillings, num_tasks=1)
+exdb.run_function('task_finite', find_finite_fillings, num_tasks=1)

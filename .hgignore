@@ -1,5 +1,7 @@
 berge/data
 .DS_Store
+slurm_out
+slurm_error
 
 syntax: glob
 *.pyc
