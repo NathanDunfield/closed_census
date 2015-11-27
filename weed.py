@@ -33,7 +33,13 @@ def weed(task):
             X = X.filled_triangulation()
             Y = census.identify(X)
             if Y and sort_key(Y.name()) < sort_key(M.name()):
-                isos = X.is_isometric_to(Y, True)
+                try:
+                    isos = X.is_isometric_to(Y, True)
+                except RuntimeError:
+                    X.randomize()
+                    X = X.high_precision()
+                    Y = Y.high_precision()
+                    isos = X.is_isometric_to(Y, True)
                 for iso in isos:
                     C = iso.cusp_maps()[0]
                     t = (C[0,0], C[1,0])
