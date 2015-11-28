@@ -37,8 +37,10 @@ def order_via_magma(group):
 def has_finite_fundamental_group(manifold):
     M = manifold.high_precision()
     G = good_presentation(manifold)
-    if G.num_generators() <= 1:
+    if G.num_generators() == 0:
         return True
+    elif G.num_generators() == 1:
+        return len(G.num_relators()) == 1  # Exclude pi_1 = Z
     return order_via_magma(G) not in [0, sage.all.infinity]
 
 def finite_fillings(manifold):

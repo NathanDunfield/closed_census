@@ -57,15 +57,26 @@ def check_collated():
     db['finite'] = db.finite.apply(eval)
     assert sum(db.finite.apply(len)) == len(da)
 
-def compare_with_new(df):
-    #exdb = taskdb2.ExampleDatabase('cusped_fillings')
-    #df = exdb.dataframe()
+def compare_with_new():
+    exdb = taskdb2.ExampleDatabase('cusped_fillings')
+    df = exdb.dataframe()
     df = df[df.finite.notnull()]
     df = df[['name', 'finite']]
 
     db = pd.read_csv('berge_finite_checked_collated.csv.bz2')
-    db['finite2'] = db['finite']
+    db['finite_berge'] = db['finite']
     del db['finite']
 
     da = pd.merge(df, db, on='name')
-    return da
+    da = da[da.finite!=da.finite_berge]
+    for col in ['finite', 'finite_berge']:
+        da[col] = da[col].apply(lambda x:set(eval(x)))
+    da = da.set_index('name')
+    magma_extras = da.finite - da.finite_berge
+    berge_extras = da.finite_berge - da.finite
+    for name, slopes in magma_extras.iteritems():
+        if len(slopes) > 0:
+            assert len(slopes) == 1
+            full_name = name + repr(list(slopes)[0])
+            print full_name, snappy.Manifold(full_name).homology()
+    return magma_extras, berge_extras
