@@ -7,7 +7,6 @@
 #SBATCH --time=7-00:00
 #SBATCH --output=slurm_out/%j
 #SBATCH --error=slurm_error/%j
-#SBATCH --nodelist=keeling-e01
 
 import taskdb2, hyperbolic
 exdb = taskdb2.ExampleDatabase('closed_02')

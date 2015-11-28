@@ -28,8 +28,11 @@ def verify_hyperbolic_basic(manifold):
     if M is not None:
         prec = 53
         while prec < 500:
-            if M.verify_hyperbolicity()[0]:
-                return True
+            try:
+                if M.verify_hyperbolicity()[0]:
+                    return True
+            except RuntimeError:
+                print('Treating exception in verify code as a failure')
             prec = 2*prec                
     return False
 
