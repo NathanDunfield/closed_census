@@ -18,4 +18,4 @@ def find_finite_fillings(task):
     task['done'] = True
 
 exdb = taskdb2.ExampleDatabase('cusped_fillings')
-exdb.run_function('task_finite', find_finite_fillings, num_tasks=1)
+exdb.run_function('task_finite2', find_finite_fillings, num_tasks=1)

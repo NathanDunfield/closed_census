@@ -40,7 +40,7 @@ def has_finite_fundamental_group(manifold):
     if G.num_generators() == 0:
         return True
     elif G.num_generators() == 1:
-        return len(G.num_relators()) == 1  # Exclude pi_1 = Z
+        return G.num_relators() == 1  # Exclude pi_1 = Z
     return order_via_magma(G) not in [0, sage.all.infinity]
 
 def finite_fillings(manifold):
