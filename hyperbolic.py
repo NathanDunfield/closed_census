@@ -1,9 +1,11 @@
 """
 Proving that a given closed manifold is hyperbolic.
 """
+import hashlib
 import snappy
 import taskdb2
 import pandas as pd
+import sage.all
 
 def all_positive(manifold):
     return manifold.solution_type() == 'all tetrahedra positively oriented'
@@ -27,9 +29,9 @@ def verify_hyperbolic_basic(manifold):
     M = find_positive_triangulation(manifold)
     if M is not None:
         prec = 53
-        while prec < 500:
+        while prec < 1000:
             try:
-                if M.verify_hyperbolicity()[0]:
+                if M.verify_hyperbolicity(bits_prec=prec)[0]:
                     return True
             except RuntimeError:
                 print('Treating exception in verify code as a failure')
@@ -77,3 +79,24 @@ def basic_invariants(task):
     if is_hyperbolic(M.low_precision()):
         task['verified'] = True
         task['done'] = True
+
+def hash_magma_group(G, index):
+    def subgroup_hash(H):
+        C = G.Core(H)
+        ans = [G.Index(H), G.Index(C), H.AQInvariants(), C.AQInvariants()]
+        return [x.sage() for x in ans]
+
+    sgs = G.LowIndexSubgroups("<1,%d>" % index)
+    return sorted([subgroup_hash(H) for H in sgs])
+
+def basic_magma_hash(M):
+    G = sage.all.magma(M.fundamental_group())
+    raw_hash = hash_magma_group(G, 6)
+    return (6, hashlib.md5(repr(raw_hash)).hexdigest())
+
+def add_magma_hash(task):
+    name = task['name']
+    M = snappy.Manifold(name)
+    task['group_hash'] = repr(basic_magma_hash(M))
+    task['done'] = True
+
