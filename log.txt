@@ -4,6 +4,13 @@ Logbook
 
 Project started 2015/11/25.
 
+Cusped manifolds
+===========
+
+All 1-cusped hyperbolic 3-manifolds that can be triangulated with at
+most 9 tetrahedra.  As enumerated by Burton and others, there are
+59,107 such manifolds.
+
 Finite fillings
 ========
 
@@ -11,4 +18,62 @@ Two sources:
 
 1. John Berge's list sent to Nathan in April/May 2015.
 
-2. 
+2. A fresh list generated using (as the *only* test) the coset
+   enumeration feature of Magma (with a limit of 250k cosets).
+
+After debugging my list (forgot to remove infinite cyclic groups
+initially) the two lists were identical except that I was missing one
+manifold that John included; rerunning that manifold with a different
+initial presentation confirmed that John was correct it include it.
+In total, there are 54,790 finite Dehn fillings on 42,325 cusped
+manifolds (so 71% of the manifolds had at least one such filling).
+Some 11,035 had two or more finite fillings, and so are Floer simple.
+Final data is in "berge/berge_finite_checked_collated.csv.bz2".
+
+
+Hyperbolic fillings
+===========
+
+I tried to enumerate all closed manifolds with injectivity radius at
+least 0.2 that are Dehn fillings on these cusped manifolds.
+Specifically, I looked at all slopes up to the size where
+Hodgson-Kerckhoff guarantees that inj <= 0.17.  For each slope, I kept
+those where the solution type is 'contains negatively oriented
+tetrahedra' or better, the volume was positive, and all dual curves
+had length >= 0.2.  This resulted in some 611,544 closed manifolds.
+
+I then drilled these manifolds and identified the exteriors to produce
+741,723 homeomorphism relations between various of these closed
+manifolds; this partitioned them into 309,666 equivalence classes.
+
+For one representative for each class, I used Goerner's verify code to
+prove hyperbolicity (sometimes taking finite covers to find a
+triangulation where all shapes are positive).  (I have great faith in
+SnapPy, but even I was surprised that it worked in every case.)
+
+Next, I refined the equivalence class structure by first computing two
+hashes:
+
+a. The volume at quad-double precision, rounded down to double (so all
+   digits should be good).
+
+b. A hash based solely on subgroups of index at most 6, computed via
+   Magma.
+
+There were 309,258 distinct hashes and hence at least that number of
+manifolds (assuming volumes are correct).  When a hash was not unique
+it was always shared by exactly two manifolds, and there were 408 pairs
+which remained to be examined.
+
+Some 342 these were due to a logic error earlier in "weed.py": the
+initial homeomorphism relations omitted those between Dehn fillings on
+the same cusped manifold induced by a symmetric of the same acting on
+the space of slopes in a nontrivial way.  Another 12 pairs are
+definitely isometric, not sure about the remaining 54.  In the
+interests of time, I'll work on resolving these later.
+
+
+Data for these two steps is saved in "cusped_fillings.csv.bz2" and
+"closed.csv.bz2"
+
+

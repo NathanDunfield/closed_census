@@ -29,6 +29,10 @@ def normalize_slope((a,b)):
     return (a,b)
 
 def weed(task):
+    """
+    WARNING: For future use, need to include relations caused by
+    symmetries of a fixed 1-cusp manifold.
+    """
     name = task['name']
     manifold = snappy.Manifold(name)
     slopes = eval(task[fill_col])
@@ -87,7 +91,35 @@ task = {'name': 'o9_35571', fill_col:'[(-5, 1), (-4, 1), (-3, 1), (-3, 2), (-2, 
                 
             
                 
-    
-    
+def refine_classes(df):
+    """
+    Look at the classes where the (volume, group) hashes colide.
+    """
+    grouped = df.groupby(['volume', 'group_hash'])
+    nontrivial = [tuple(df.name.ix[g]) for g in grouped.groups.values() if len(g) > 1]
+    assert {len(g) for g in nontrivial} == {2}
+    merge = []
+    bad = []
+    for a, b in nontrivial:
+        A = snappy.Manifold(a)
+        B = snappy.Manifold(b)
+        if A.name() == B.name():
+            for X in [A, B]:
+                X.set_peripheral_curves('fillings')
+                X.dehn_fill((0,0))
+            isoms = A.is_isometric_to(B, True)
+            if any(i.extends_to_link() for i in isoms):
+                merge.append((a, b))
+            else:
+                bad.append((a,b))
+        else:
+            try:
+                if A.is_isometric_to(B):
+                    merge.append((a,b))
+            except RuntimeError:
+                bad.append((a,b))
+                
+
+    return merge, bad
     
     

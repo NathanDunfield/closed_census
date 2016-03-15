@@ -89,9 +89,9 @@ def hash_magma_group(G, index):
     sgs = G.LowIndexSubgroups("<1,%d>" % index)
     return sorted([subgroup_hash(H) for H in sgs])
 
-def basic_magma_hash(M):
+def basic_magma_hash(M, index=6):
     G = sage.all.magma(M.fundamental_group())
-    raw_hash = hash_magma_group(G, 6)
+    raw_hash = hash_magma_group(G, 7)
     return (6, hashlib.md5(repr(raw_hash)).hexdigest())
 
 def add_magma_hash(task):
