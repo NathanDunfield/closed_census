@@ -100,10 +100,10 @@ def add_magma_hash(task):
     task['group_hash'] = repr(basic_magma_hash(M))
     task['done'] = True
 
-def add_magma_hash_10(task):
+def add_magma_hash_8(task):
     name = task['name']
     M = snappy.Manifold(name)
-    task['group_hash_10'] = repr(basic_magma_hash(M, index=10))
+    task['group_hash_8'] = repr(basic_magma_hash(M, index=8))
     task['done'] = True
 
 
