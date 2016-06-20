@@ -10,4 +10,4 @@
 
 import taskdb2, hyperbolic
 exdb = taskdb2.ExampleDatabase('closed_02')
-exdb.run_function('task_group_hash_10', hyperbolic.add_magma_hash_8)
+exdb.run_function('task_group_hash_10', hyperbolic.add_magma_hash_10)

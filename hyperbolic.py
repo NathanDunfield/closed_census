@@ -80,10 +80,12 @@ def basic_invariants(task):
         task['verified'] = True
         task['done'] = True
 
-def hash_magma_group(G, index):
+def hash_magma_group(G, index, lite=False):
     def subgroup_hash(H):
         C = G.Core(H)
-        ans = [G.Index(H), G.Index(C), H.AQInvariants(), C.AQInvariants()]
+        ans = [G.Index(H), G.Index(C), H.AQInvariants()]
+        if not lite:
+            ans.append(C.AQInvariants())
         return [x.sage() for x in ans]
 
     sgs = G.LowIndexSubgroups("<1,%d>" % index)
@@ -94,16 +96,21 @@ def basic_magma_hash(M, index=6):
     raw_hash = hash_magma_group(G, index+1)
     return (index, hashlib.md5(repr(raw_hash)).hexdigest())
 
+def basic_magma_hash_lite(M, index=6):
+    G = sage.all.magma(M.fundamental_group())
+    raw_hash = hash_magma_group(G, index+1, lite=True)
+    return (index, 'lite', hashlib.md5(repr(raw_hash)).hexdigest())
+
 def add_magma_hash(task):
     name = task['name']
     M = snappy.Manifold(name)
     task['group_hash'] = repr(basic_magma_hash(M))
     task['done'] = True
 
-def add_magma_hash_8(task):
+def add_magma_hash_10(task):
     name = task['name']
     M = snappy.Manifold(name)
-    task['group_hash_8'] = repr(basic_magma_hash(M, index=8))
+    task['group_hash_10'] = repr(basic_magma_hash_lite(M, index=10))
     task['done'] = True
 
 
