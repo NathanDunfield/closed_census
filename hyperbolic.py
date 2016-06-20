@@ -91,12 +91,19 @@ def hash_magma_group(G, index):
 
 def basic_magma_hash(M, index=6):
     G = sage.all.magma(M.fundamental_group())
-    raw_hash = hash_magma_group(G, 7)
-    return (6, hashlib.md5(repr(raw_hash)).hexdigest())
+    raw_hash = hash_magma_group(G, index+1)
+    return (index, hashlib.md5(repr(raw_hash)).hexdigest())
 
 def add_magma_hash(task):
     name = task['name']
     M = snappy.Manifold(name)
     task['group_hash'] = repr(basic_magma_hash(M))
     task['done'] = True
+
+def add_magma_hash_10(task):
+    name = task['name']
+    M = snappy.Manifold(name)
+    task['group_hash_10'] = repr(basic_magma_hash(M, index=10))
+    task['done'] = True
+
 

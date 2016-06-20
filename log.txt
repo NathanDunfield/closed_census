@@ -67,11 +67,10 @@ which remained to be examined.
 
 Some 342 these were due to a logic error earlier in "weed.py": the
 initial homeomorphism relations omitted those between Dehn fillings on
-the same cusped manifold induced by a symmetric of the same acting on
+the same cusped manifold induced by a symmetry of the same acting on
 the space of slopes in a nontrivial way.  Another 12 pairs are
 definitely isometric, not sure about the remaining 54.  In the
 interests of time, I'll work on resolving these later.
-
 
 Data for these two steps is saved in "cusped_fillings.csv.bz2" and
 "closed.csv.bz2"
