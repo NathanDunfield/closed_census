@@ -77,4 +77,17 @@ Data for these two steps is saved in "cusped_fillings.csv.bz2" and
 
 Work resumed 2016/6/20.  By adding another group-based hash, this time
 looking at non-abelian simple quotients, the remaining 54 pairs were
-distinguished. 
+found to be all distinct.  So there are 309,312 distinct closed
+manifolds in this sample.
+
+Computing the injectivity radius (using quad-double precision), I found
+three examples with injectivity radius < 0.195::
+
+  m055(2, 1), m060(2, 3), m119(-1, 3)
+
+deleting these resulted in a final count of 309,309 distinct closed
+manifolds.
+
+
+
+
