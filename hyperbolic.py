@@ -80,16 +80,16 @@ def basic_invariants(task):
         task['verified'] = True
         task['done'] = True
 
-def hash_magma_group(G, index, lite=False):
-    def subgroup_hash(H):
-        C = G.Core(H)
-        ans = [G.Index(H), G.Index(C), H.AQInvariants()]
-        if not lite:
-            ans.append(C.AQInvariants())
-        return [x.sage() for x in ans]
+def subgroup_hash(G, H, lite):
+    C = G.Core(H)
+    ans = [G.Index(H), G.Index(C), H.AQInvariants()]
+    if not lite:
+        ans.append(C.AQInvariants())
+    return [x.sage() for x in ans]
 
+def hash_magma_group(G, index, lite=False):
     sgs = G.LowIndexSubgroups("<1,%d>" % index)
-    return sorted([subgroup_hash(H) for H in sgs])
+    return sorted([subgroup_hash(G, H, lite) for H in sgs])
 
 def basic_magma_hash(M, index=6):
     G = sage.all.magma(M.fundamental_group())
@@ -113,4 +113,16 @@ def add_magma_hash_10(task):
     task['group_hash_10'] = repr(basic_magma_hash_lite(M, index=10))
     task['done'] = True
 
+def add_magma_hash_simple_quo(task):
+    M = snappy.Manifold(task['name'])
+    G = sage.all.magma(M.fundamental_group())
+    raw_hash = []
+    for homs in G.SimpleQuotients(10000, Limit=10**10):
+        for h in homs:
+            H = G.sub(h)
+            raw_hash.append(subgroup_hash(G, H, True))
+    raw_hash = sorted(raw_hash)
+    task['group_hash_simple'] = hashlib.md5(repr(raw_hash)).hexdigest()
+    task['done'] = True
+    
 
