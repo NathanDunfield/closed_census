@@ -124,5 +124,13 @@ def add_magma_hash_simple_quo(task):
     raw_hash = sorted(raw_hash)
     task['group_hash_simple'] = hashlib.md5(repr(raw_hash)).hexdigest()
     task['done'] = True
-    
 
+def add_injectivity_radius(task):
+    M = snappy.Manifold(task['name'])
+    radius = 0.34
+    spec = []
+    while len(spec) == 0:
+        radius = 1.5*radius
+        spec = M.length_spectrum(radius)
+    task['inj'] = float(spec[0].length.real())
+    task['done'] = True

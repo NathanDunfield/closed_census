@@ -5,14 +5,14 @@ Logbook
 Project started 2015/11/25.
 
 Cusped manifolds
-===========
+================
 
 All 1-cusped hyperbolic 3-manifolds that can be triangulated with at
 most 9 tetrahedra.  As enumerated by Burton and others, there are
 59,107 such manifolds.
 
 Finite fillings
-========
+===============
 
 Two sources:
 
@@ -32,7 +32,7 @@ Final data is in "berge/berge_finite_checked_collated.csv.bz2".
 
 
 Hyperbolic fillings
-===========
+===================
 
 I tried to enumerate all closed manifolds with injectivity radius at
 least 0.2 that are Dehn fillings on these cusped manifolds.
@@ -75,4 +75,6 @@ interests of time, I'll work on resolving these later.
 Data for these two steps is saved in "cusped_fillings.csv.bz2" and
 "closed.csv.bz2"
 
-
+Work resumed 2016/6/20.  By adding another group-based hash, this time
+looking at non-abelian simple quotients, the remaining 54 pairs were
+distinguished. 

@@ -10,4 +10,4 @@
 
 import taskdb2, hyperbolic
 exdb = taskdb2.ExampleDatabase('closed_02')
-exdb.run_function('task_group_hash_simple', hyperbolic.add_magma_hash_simple_quo)
+exdb.run_function('task_inj', hyperbolic.add_injectivity_radius)
