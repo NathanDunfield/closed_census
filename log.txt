@@ -72,8 +72,8 @@ the space of slopes in a nontrivial way.  Another 12 pairs are
 definitely isometric, not sure about the remaining 54.  In the
 interests of time, I'll work on resolving these later.
 
-Data for these two steps is saved in "cusped_fillings.csv.bz2" and
-"closed.csv.bz2"
+Data for these two steps was saved in the original versions of
+"cusped_fillings.csv.bz2" and "closed.csv.bz2" in the Mercurial repo.
 
 Work resumed 2016/6/20.  By adding another group-based hash, this time
 looking at non-abelian simple quotients, the remaining 54 pairs were
@@ -86,7 +86,10 @@ three examples with injectivity radius < 0.195::
   m055(2, 1), m060(2, 3), m119(-1, 3)
 
 deleting these resulted in a final count of 309,309 distinct closed
-manifolds.
+manifolds. The collected Dehn-filling descriptions for each closed
+manifold were then copied into the cusped database.
+
+
 
 
 

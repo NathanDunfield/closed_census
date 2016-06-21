@@ -137,3 +137,18 @@ def add_injectivity_radius(task):
         task['done'] = True
     except RuntimeError:
         return
+
+def add_homology(task):
+    """
+    Infinite order is recorded as 0.  
+    """
+    M = snappy.Manifold(task['name'])
+    H = M.homology()
+    divs = H.elementary_divisors()
+    task['H_1'] = repr(divs)
+    order = H.order()
+    if order=='infinite':
+        order = 0
+    task['H_1_order'] = order
+    task['betti'] = H.betti_number()
+    task['done'] = True

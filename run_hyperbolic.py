@@ -10,4 +10,4 @@
 
 import taskdb2, hyperbolic
 exdb = taskdb2.ExampleDatabase('closed_02')
-exdb.run_function('task_inj', hyperbolic.add_injectivity_radius)
+exdb.run_function('task_homology', hyperbolic.add_homology)
