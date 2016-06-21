@@ -126,11 +126,14 @@ def add_magma_hash_simple_quo(task):
     task['done'] = True
 
 def add_injectivity_radius(task):
-    M = snappy.Manifold(task['name'])
+    M = snappy.ManifoldHP(task['name'])
     radius = 0.34
     spec = []
-    while len(spec) == 0:
-        radius = 1.5*radius
-        spec = M.length_spectrum(radius)
-    task['inj'] = float(spec[0].length.real())
-    task['done'] = True
+    try:
+        while len(spec) == 0:
+            radius = 1.5*radius
+            spec = M.length_spectrum(radius)
+        task['inj'] = float(spec[0].length.real())
+        task['done'] = True
+    except RuntimeError:
+        return
