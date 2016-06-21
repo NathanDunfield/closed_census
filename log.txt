@@ -89,6 +89,10 @@ deleting these resulted in a final count of 309,309 distinct closed
 manifolds. The collected Dehn-filling descriptions for each closed
 manifold were then copied into the cusped database.
 
+Both the closed and cusped databases were saved in
+"cusped_fillings.csv.bz2" and "closed.csv.bz2" on 2016/6/21 in
+changeset aeeeb60c7cde.
+
 
 
 
