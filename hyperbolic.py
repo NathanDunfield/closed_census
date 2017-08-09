@@ -138,6 +138,34 @@ def add_injectivity_radius(task):
     except RuntimeError:
         return
 
+def add_injectivity_cusped(task):
+    # Note version was only used for a few outliers
+    M = snappy.ManifoldHP(task['name'])
+    curves = M.dual_curves()
+    if len(curves) > 0:
+        likely_systole = curves[0].complete_length.real()
+        if likely_systole < 0.01:
+            task['inj'] = float(likely_systole)
+            task['done'] = True
+            return
+        cutoff = 1.1 * likely_systole
+    else:
+        cutoff = 0.34
+    spec = []
+    while len(spec) == 0:
+        try:
+            radius = 1.5*cutoff
+            spec = M.length_spectrum(cutoff)
+        except RuntimeError:
+            try:
+                D = M.dirichlet_domain(centroid_at_origin=False)
+                spec = D.length_spectrum_dicts(cutoff)
+            except RuntimeError:
+                return 
+
+    task['inj'] = float(spec[0].length.real())
+    task['done'] = True
+
 def add_homology(task):
     """
     Infinite order is recorded as 0.  
@@ -151,4 +179,10 @@ def add_homology(task):
         order = 0
     task['H_1_order'] = order
     task['betti'] = H.betti_number()
+    task['done'] = True
+
+def basic_invariants_cusped(task):
+    M = snappy.ManifoldHP(task['name'])
+    task['volume'] = float(M.volume())
+    task['chern_simons'] = float(M.chern_simons())
     task['done'] = True

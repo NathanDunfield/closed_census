@@ -42,6 +42,10 @@ those where the solution type is 'contains negatively oriented
 tetrahedra' or better, the volume was positive, and all dual curves
 had length >= 0.2.  This resulted in some 611,544 closed manifolds.
 
+WARNING: By "injectivity radius" here, I really mean the length of the
+systol. This is bad terminology, but I'm too lazy to fix it right
+now. 
+
 I then drilled these manifolds and identified the exteriors to produce
 741,723 homeomorphism relations between various of these closed
 manifolds; this partitioned them into 309,666 equivalence classes.
