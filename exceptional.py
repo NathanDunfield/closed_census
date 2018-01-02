@@ -31,4 +31,20 @@ def remaining_exceptional(task):
 
 task0 = {'name':'o9_39593', 'fillings':'dict()'}
 
-taskdb2.worker.run_function('cusped_fillings', 'task_other', remaining_exceptional)
+#taskdb2.worker.run_function('cusped_fillings', 'task_other', remaining_exceptional)
+
+import pandas as pd
+
+#data = pd.read_csv('cusped_fillings.csv.bz2')
+
+def make_exceptional_database(data):
+    names, kinds = [], []
+    for i, cusped in data.iterrows():
+        name = cusped['name']
+        for slope in eval(cusped['finite']):
+            names.append(name + repr(slope))
+            kinds.append('finite')
+        for slope in eval(cusped['other_exceptional']):
+            names.append(name + repr(slope))
+            kinds.append('')
+    return pd.DataFrame({'name':names, 'kind':kinds}, columns=['name', 'kind'])
