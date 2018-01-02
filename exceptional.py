@@ -22,7 +22,8 @@ def remaining_exceptional(task):
             M = manifold.copy()
             M.dehn_fill(s, 0)
             if dehn.appears_hyperbolic(M):
-                assert dehn.approx_systole(M) < 0.2
+                if dehn.approx_systole(M) < 0.2:
+                    assert len(M.length_spectrum(0.2)) != 0
             else:
                 ans.append(s)
     task['other_exceptional'] = repr(ans)
