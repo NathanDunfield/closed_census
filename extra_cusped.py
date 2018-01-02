@@ -53,17 +53,31 @@ def manifold_info(manifold, closed_table):
 def save_extras(extras=None, closed_table=None):
     if extras is None:
         extras = []
-        for i, row in pd.read_csv('extra_cusped_raw.csv').iterrows():
+        for i, row in pd.read_csv('extra_cusped_raw_2.csv').iterrows():
             M = snappy.Manifold(row['name'])
             M.set_peripheral_curves('shortest')
             M.set_name('X_%d' % i)
             extras.append(M)
     if closed_table is None:
         closed_table = pd.read_csv('closed.csv.bz2')
-    extra = [manifold_info(M, closed_table) for M in [A, B]]
+    extra = [manifold_info(M, closed_table) for M in extras]
     data = pd.DataFrame(data=extra, columns=columns)
-    data.to_csv('extra_cusped.csv', index=False)
+    data.to_csv('extra_cusped_2.csv', index=False)
+
+
+closed_table = pd.read_csv('closed.csv.bz2')
+
+def process_manifold_info(task):
+    manifold = snappy.Manifold(task['isosig'])
+    finite_fill = finite.finite_fillings(manifold)
+    all_fill = classify_fillings(manifold, closed_table)
+    for slope in finite_fill:
+        all_fill[slope] = 'finite'
+    task['finite'] = repr(finite_fill)
+    task['fillings'] = repr(all_fill)
+    task['betti'] = manifold.homology().betti_number()
+    task['done'] = True
 
     
-
-    
+import taskdb2.worker
+taskdb2.worker.run_function('extra_cusped', 'task_info', process_manifold_info)

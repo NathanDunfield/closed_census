@@ -92,6 +92,20 @@ def appears_hyperbolic(M):
                   'contains negatively oriented tetrahedra']
     return M.solution_type() in acceptable and M.volume() > 0
 
+def approx_systole(M):
+    """
+    >>> M = snappy.ManifoldHP('s918(-5, 1)') 
+    >>> N = snappy.ManifoldHP('o9_33519(-2, 1)') 
+    >>> M.is_isometric_to(N)
+    True
+    >>> float(approx_systole(M)) == float(approx_systole(N))
+    True
+    >>> float(approx_systole(M))
+    """
+    c = M.cusp_info(0).core_length
+    d = M.dual_curves()[0]
+    return min(c.real(), d['filled_length'].real())
+
 def hyperbolic_dehn_fillings(manifold, min_core_geod=0.2):
     """
     >>> M = snappy.ManifoldHP('s000')
