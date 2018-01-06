@@ -1,4 +1,4 @@
-import os, sys, re, glob, csv
+import os, sys, re, glob, csv, tarfile
 import pandas as pd
 import sage.all
 import snappy
@@ -12,14 +12,16 @@ def sort_key(datum):
 
 def extract_john_to_csv():
     ans = []
-    for filename in glob.glob('data/OCC*'):
-        for line in open(filename):
-            if len(line) > 1 and line[0] in ['m', 's', 'v', 't', 'o']:
-                line = line.strip()
-                parts = line.split()
-                name = parts[0]
-                description = ' '.join(parts[1:])
-                ans.append((name, description))
+    archive = tarfile.open('data.tar.bz2')
+    for file in archive.getmembers():
+        if file.name.startswith('data/OCC'):
+            for line in archive.extractfile(file):
+                if len(line) > 1 and line[0] in ['m', 's', 'v', 't', 'o']:
+                    line = line.strip()
+                    parts = line.split()
+                    name = parts[0]
+                    description = ' '.join(parts[1:])
+                    ans.append((name, description))
 
     ans.sort(key=sort_key)
 
