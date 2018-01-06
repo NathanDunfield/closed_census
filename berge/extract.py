@@ -59,6 +59,28 @@ def check_collated():
     db['finite'] = db.finite.apply(eval)
     assert sum(db.finite.apply(len)) == len(da)
 
+def remove_S2xS1():
+    """
+    Initially, I tested if the fundamental group was cyclic, rather
+    than *finite* cyclic, hence idenifying some S^2 x S^1 fillings as
+    having finite fundamental group.  This function fixes this.
+    """
+    def fix_finite(row):
+        M = snappy.Triangulation(row['name'])
+        corrected_slopes = []
+        for slope in eval(row['finite']):
+            M.dehn_fill(slope)
+            if M.homology().betti_number() == 0:
+                corrected_slopes.append(slope)
+        return repr(corrected_slopes)
+
+    exdb = taskdb2.ExampleDatabase('cusped_fillings')
+    df = exdb.dataframe()
+    df['finite'] = df.apply(fix_finite, axis=1)
+    exdb.update_column(df, 'finite')
+    
+    
+    
 def compare_with_new():
     exdb = taskdb2.ExampleDatabase('cusped_fillings')
     df = exdb.dataframe()
@@ -69,16 +91,15 @@ def compare_with_new():
     db['finite_berge'] = db['finite']
     del db['finite']
 
-    da = pd.merge(df, db, on='name')
+    da = pd.merge(df, db, on='name', how='outer')
+    da.finite.fillna('[]', inplace=True)
+    da.finite_berge.fillna('[]', inplace=True)
+    da = da[da.finite!=da.finite_berge]
+
     da = da[da.finite!=da.finite_berge]
     for col in ['finite', 'finite_berge']:
         da[col] = da[col].apply(lambda x:set(eval(x)))
     da = da.set_index('name')
     magma_extras = da.finite - da.finite_berge
     berge_extras = da.finite_berge - da.finite
-    for name, slopes in magma_extras.iteritems():
-        if len(slopes) > 0:
-            assert len(slopes) == 1
-            full_name = name + repr(list(slopes)[0])
-            print full_name, snappy.Manifold(full_name).homology()
     return magma_extras, berge_extras

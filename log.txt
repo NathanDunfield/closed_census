@@ -25,11 +25,17 @@ After debugging my list (forgot to remove infinite cyclic groups
 initially) the two lists were identical except that I was missing one
 manifold that John included; rerunning that manifold with a different
 initial presentation confirmed that John was correct it include it.
-In total, there are 54,790 finite Dehn fillings on 42,325 cusped
-manifolds (so 71% of the manifolds had at least one such filling).
-Some 11,035 had two or more finite fillings, and so are Floer simple.
+In total, there are 59,200 finite Dehn fillings on 46,176 cusped
+manifolds (so 78.1% of the manifolds had at least one such filling).
+Some 11,594 had two or more finite fillings, and so are Floer simple.
 Final data is in "berge/berge_finite_checked_collated.csv.bz2".
 
+Note: Above numbers updated 2018/1/6 from earlier incorrect values of
+54,790, 42,325, and 11,035 respectively.  I was missing on of John's
+files causing me to undercount, even though the final list exported to
+"combined_conjecture" and elsewhere was correct (except for the above
+mentioned inclusion of some S^2 x S^1 fillings as having "finite"
+fundamental group; this was also corrected on 2018/1/6, see below).
 
 Hyperbolic fillings
 ===================
@@ -96,6 +102,10 @@ manifold were then copied into the cusped database.
 Both the closed and cusped databases were saved in
 "cusped_fillings.csv.bz2" and "closed.csv.bz2" on 2016/6/21 in
 changeset aeeeb60c7cde.
+
+On 2018/6/1, the file "cusped_fillings.csv.bz2" was updated to remove
+200 S^2 x S^1 fillings that had been erroneously tagged as "finite
+fillings".
 
 
 
