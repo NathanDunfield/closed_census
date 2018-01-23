@@ -26,7 +26,7 @@ def remaining_exceptional(task):
                     assert len(M.length_spectrum(0.2)) != 0
             else:
                 ans.append(s)
-    task['other_exceptional'] = repr(ans)
+    task['new_exceptional'] = repr(ans)
     task['done'] = True
 
 task0 = {'name':'o9_39593', 'fillings':'dict()'}

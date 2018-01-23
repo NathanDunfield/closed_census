@@ -88,9 +88,24 @@ def test_cusp_lattice_primitive_elements(num_tests=10):
         assert prim_elts1 == prim_elts2
 
 def appears_hyperbolic(M):
+    """
+    This example returns the complete structure even though we asked
+    for something on the Dehn filling.
+
+    >>> M = snappy.Manifold('m305(1, 0)')
+    >>> appears_hyperbolic(M)
+    False
+    """
     acceptable = ['all tetrahedra positively oriented',
                   'contains negatively oriented tetrahedra']
-    return M.solution_type() in acceptable and M.volume() > 0
+    if M.solution_type() in acceptable and M.volume() > 0:
+        for cusp in M.cusp_info():
+            if not cusp.is_complete:
+                if cusp.core_length.real() < 1e-10:
+                    return False
+        return True
+    else:
+        return False
 
 def approx_systole(M):
     """
@@ -101,6 +116,7 @@ def approx_systole(M):
     >>> float(approx_systole(M)) == float(approx_systole(N))
     True
     >>> float(approx_systole(M))
+    0.36951117321124866
     """
     c = M.cusp_info(0).core_length
     d = M.dual_curves()[0]
