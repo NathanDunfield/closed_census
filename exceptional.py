@@ -19,10 +19,11 @@ def remaining_exceptional(task):
     ans = []
     for s in L.primitive_elements():
         if tuple(s) not in known:
+            print(s) 
             M = manifold.copy()
             M.dehn_fill(s, 0)
             if dehn.appears_hyperbolic(M):
-                if dehn.approx_systole(M) < 0.2:
+                if dehn.approx_systole(M) >= 0.2:
                     assert len(M.length_spectrum(0.2)) != 0
             else:
                 ans.append(s)
@@ -30,6 +31,7 @@ def remaining_exceptional(task):
     task['done'] = True
 
 task0 = {'name':'o9_39593', 'fillings':'dict()'}
+task1 = {'name':'o9_00523', 'fillings':'dict()'}
 
 #taskdb2.worker.run_function('cusped_fillings', 'task_other', remaining_exceptional)
 
