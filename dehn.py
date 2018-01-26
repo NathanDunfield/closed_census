@@ -4,6 +4,7 @@ Dehn fillings of 1-cusped hyperbolic 3-manifolds.
 
 from sage.all import gcd, vector, matrix, sqrt, ComplexField, RealField
 import snappy
+import hyperbolic
 
 def dehn_filling_filter(a, b):
     return gcd(a,b) == 1 and not (a == 0 and b < 0) and not (a < 0 and b == 0)
@@ -106,7 +107,7 @@ def appears_hyperbolic(M):
         return True
     else:
         return False
-
+        
 def approx_systole(M):
     """
     >>> M = snappy.ManifoldHP('s918(-5, 1)') 
