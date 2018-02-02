@@ -25,6 +25,15 @@ def find_positive_triangulation(manifold, tries=100):
                 return X
             X.randomize()
 
+    # In the closed case, here is another trick.
+    if all(not c for c in M.cusp_info('is_complete')):
+        for i in range(tries):
+            # Drills out a random edge
+            X = M.__class__(M.filled_triangulation())
+            if all_positive(X):
+                return X
+            M.randomize()
+
 def verify_hyperbolic_basic(manifold):
     M = find_positive_triangulation(manifold)
     if M is not None:
