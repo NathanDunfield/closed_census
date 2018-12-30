@@ -2,9 +2,13 @@
 Dehn fillings of 1-cusped hyperbolic 3-manifolds.
 """
 
-from sage.all import gcd, vector, matrix, sqrt, ComplexField, RealField
+from sage.all import (gcd, vector, matrix, sqrt,
+                      ComplexField, RealField, FreeModule,
+                      ZZ) 
 import snappy
 import hyperbolic
+
+ZZ2 = FreeModule(ZZ, 2)
 
 def dehn_filling_filter(a, b):
     return gcd(a,b) == 1 and not (a == 0 and b < 0) and not (a < 0 and b == 0)
@@ -17,7 +21,13 @@ def half_square(n, primitive=False):
     top = [ (k, n) for k in range(-n, n)]
     right = [ (n, k) for k in range(0, n + 1)]
     left = [(-n, k) for k in range(0, n)]
-    return [ vector(p) for p in left+top+right if not primitive or dehn_filling_filter(*p) ]
+    return [ ZZ2(p) for p in left+top+right if not primitive or dehn_filling_filter(*p) ]
+
+def half_filled_square(n, primitive=False):
+    ans = []
+    for i in range(1, n + 1):
+        ans += half_square(i, primitive)
+    return ans
 
 class NormalizedCuspLattice:
     """
