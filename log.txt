@@ -107,6 +107,9 @@ On 2018/6/1, the file "cusped_fillings.csv.bz2" was updated to remove
 200 S^2 x S^1 fillings that had been erroneously tagged as "finite
 fillings".
 
+On 2019/1/12, the file "closed.csv.bz2" was updated to reflect a bug
+fix in the SnapPy code for computing the Chern-Simons invariant in
+high-precision.  This changed the values for 1598 manifolds.
 
 
 

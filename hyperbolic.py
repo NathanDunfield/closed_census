@@ -89,6 +89,16 @@ def basic_invariants(task):
         task['verified'] = True
         task['done'] = True
 
+def recompute_chern_simons(task):
+    # Cf. https://bitbucket.org/t3m/snappy/pull-requests/63
+    name = task['name']
+    base, fill = name.split('(')
+    M = snappy.ManifoldHP(base)
+    M.chern_simons()
+    M.dehn_fill(eval('(' + fill))
+    task['chern_simons'] = float(M.chern_simons())
+    task['done'] = True
+
 def subgroup_hash(G, H, lite):
     C = G.Core(H)
     ans = [G.Index(H), G.Index(C), H.AQInvariants()]
