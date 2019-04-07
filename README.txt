@@ -31,7 +31,7 @@ Some 11,594 had two or more finite fillings, and so are Floer simple.
 Final data is in "berge/berge_finite_checked_collated.csv.bz2".
 
 Note: Above numbers updated 2018/1/6 from earlier incorrect values of
-54,790, 42,325, and 11,035 respectively.  I was missing on of John's
+54,790, 42,325, and 11,035 respectively.  I was missing one of John's
 files causing me to undercount, even though the final list exported to
 "combined_conjecture" and elsewhere was correct (except for the above
 mentioned inclusion of some S^2 x S^1 fillings as having "finite"
